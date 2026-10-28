@@ -1,0 +1,13 @@
+# 검증 기록 · 2026-10-29
+- Flutter 3.47.5 / Dart 3.13.4, macOS arm64.
+- VS Code 1.140.0, Dart/Flutter 확장 설치 확인.
+- flutter analyze: No issues found.
+- flutter test: 흐름·입력 검증·같은 문항 해설·고정 결과·3 GET 화면의 상태/재시도·320/1280px, 5개 통과.
+- 선택적 screenshot test: 실제 글꼴을 넣고 별도 실행, 1개 통과. 기본 테스트에서 이 캡처 작업만 skip.
+- flutter build web --release 성공.
+- 로컬 Git clone 새 경로에서 npm ci, pub get, analyze, test, web build 성공.
+- 실제 브라우저에서 입력→요약→3문항→해설→고정 결과→입력 복귀 확인.
+- 서버를 끈 상태에서 실제 오류 화면, 서버 재시작 후 다시 시도로 GET 성공 확인.
+- 1분 영상은 브라우저 캡처 편집 + 명시한 위젯 테스트 상태 화면이다. 연속 녹화 아님.
+- PPTX는 구조/레이아웃 검사 통과. PowerPoint 동영상 재생은 미확인.
+- 네이티브 플랫폼 빌드, 본인 6분 계시 리허설, LMS 제출은 미확인.
