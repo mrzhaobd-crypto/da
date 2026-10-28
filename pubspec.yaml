@@ -1,5 +1,5 @@
-name: mid_project_template
-description: "GAI3008 중간고사 — 실제 앱 v2 UI 프로토타입 (UI만 구현, json-server GET)"
+name: notequiz
+description: "A new Flutter project."
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
@@ -19,7 +19,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 version: 1.0.0+1
 
 environment:
-  sdk: ^3.10.0
+  sdk: ^3.13.4
 
 # Dependencies specify other packages that your package needs in order to work.
 # To automatically upgrade your package dependencies to the latest versions
@@ -34,7 +34,6 @@ dependencies:
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.8
-  # 추가 패키지는 http 하나뿐 — 다른 패키지를 넣기 전에 AGENTS.md를 다시 읽는다
   http: ^1.6.0
 
 dev_dependencies:

@@ -1,87 +1,58 @@
-// 3상태(로딩·오류·빈) + 화면 흐름(push · tab · modal) + 적응형(600dp) 위젯 테스트.
-// 네트워크를 쓰지 않도록 ListScreen에 가짜 loader를 넣는다 → json-server 없이 `flutter test`가 돈다.
 import 'dart:async';
-
+import 'dart:convert';
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-
-import 'package:mid_project_template/api.dart';
-import 'package:mid_project_template/models.dart';
-import 'package:mid_project_template/screens/a_list_screen.dart';
-
-const _items = [
-  Item(id: 1, title: '항목 1', subtitle: '설명 1', image: '', tags: ['태그']),
-  Item(id: 2, title: '항목 2', subtitle: '설명 2', image: ''),
-];
-
-Future<List<Note>> _noNotes(int _) async => const [];
-
-Widget _app(ItemsLoader load) => MaterialApp(
-  home: ListScreen(load: load, loadNotes: _noNotes),
-);
-
-void _setSize(WidgetTester tester, Size size) {
-  tester.view.physicalSize = size;
-  tester.view.devicePixelRatio = 1;
-  addTearDown(tester.view.reset);
-}
-
+import 'package:notequiz/main.dart';
+import 'package:notequiz/api.dart';
+import 'package:notequiz/widgets.dart';
+import 'package:notequiz/screens/quiz.dart';
+import 'package:notequiz/screens/result.dart';
+import 'package:notequiz/screens/summary.dart';
 void main() {
-  testWidgets('3상태: 로딩 → 오류 → 다시 시도 → 성공', (tester) async {
-    _setSize(tester, const Size(400, 800));
-
-    // 로딩 → 오류
-    final first = Completer<List<Item>>();
-    var calls = 0;
-    await tester.pumpWidget(
-      _app(() => ++calls == 1 ? first.future : Future.value(_items)),
-    );
-    expect(find.byType(CircularProgressIndicator), findsOneWidget);
-    expect(find.text('목록을 불러오는 중…'), findsOneWidget);
-
-    first.completeError(Exception('테스트 오류'));
-    await tester.pumpAndSettle();
-    expect(find.text('목록을 불러오지 못했습니다.'), findsOneWidget);
-
-    // 다시 시도 → 성공
-    await tester.tap(find.text('다시 시도'));
-    await tester.pumpAndSettle();
-    expect(find.text('항목 1'), findsOneWidget);
-    expect(calls, 2);
+ final db = jsonDecode(File('mock_server/db.json').readAsStringSync()) as Map;
+ Future<Rows> load(String key) async => (db[key] as List).map((x)=>Map<String,dynamic>.from(x as Map)).toList();
+ Future<void> tap(WidgetTester t, String text) async { final f=find.text(text); await t.ensureVisible(f); await t.tap(f); await t.pumpAndSettle(); }
+ testWidgets('input validation and complete 3-question flow with fixed result', (t) async {
+  await t.pumpWidget(NoteQuizApp(loader: load));
+  await tap(t,'I-3 예시 요약 확인'); expect(find.text('강의 내용을 입력하거나 예시를 불러오세요.'),findsOneWidget);
+  await tap(t,'I-2 예시 강의 불러오기'); await tap(t,'I-3 예시 요약 확인');
+  expect(find.textContaining('S-1 선언형 UI'),findsOneWidget);
+  await tap(t,'S-4 복습 퀴즈 시작');
+  final choices=['○ 앱 가격','○ O','○ 실제 결제'];
+  for(var i=0;i<3;i++) {
+   final button=t.widget<FilledButton>(find.widgetWithText(FilledButton,'Q-3 정답과 해설 확인')); expect(button.onPressed,isNull);
+   await tap(t,choices[i]); await tap(t,'Q-3 정답과 해설 확인');
+   expect(find.text('E-3 강의 근거'),findsOneWidget);
+   expect(find.text('E-2 정답: ${db['questions'][i]['answer']}'),findsOneWidget);
+   await tap(t,i<2?'E-4 다음 문제':'E-4 예시 결과 보기');
+  }
+  expect(find.text('예시 결과 2 / 3'),findsOneWidget); // all wrong selections still fixed result
+  await tap(t,'R-3 해설 다시 보기'); expect(find.text('E-3 강의 근거'),findsOneWidget);
+  await t.pageBack(); await t.pumpAndSettle(); await tap(t,'R-4 새 강의 입력');
+  expect(find.text('I-3 예시 요약 확인'),findsOneWidget);
+ });
+ for(final kind in ['summary','quiz','result']) {
+  Widget page(Loader loader) => switch(kind) {
+   'summary'=>SummaryScreen(loader:loader), 'quiz'=>QuizLoadScreen(loader:loader),
+   _=>ResultScreen(questions:(db['questions'] as List).map((x)=>Map<String,dynamic>.from(x as Map)).toList(),loader:loader)
+  };
+  testWidgets('$kind loading empty error retry', (t) async {
+   final pending=Completer<Rows>();
+   await t.pumpWidget(MaterialApp(home:page((_)=>pending.future))); await t.pump(); expect(find.byType(LoadingView),findsOneWidget);
+   pending.complete([]); await t.pumpAndSettle(); expect(find.byType(EmptyView),findsOneWidget);
+   await t.pumpWidget(const SizedBox()); var calls=0;
+   await t.pumpWidget(MaterialApp(home:page((r) async { if(calls++==0) throw Exception('offline'); return load(r); })));
+   await t.pumpAndSettle(); expect(find.byType(ErrorView),findsOneWidget);
+   await tap(t,'다시 시도'); expect(find.byType(ErrorView),findsNothing); expect(calls,2);
   });
-
-  testWidgets('3상태: 빈 상태', (tester) async {
-    await tester.pumpWidget(_app(() async => const []));
-    await tester.pumpAndSettle();
-    expect(find.text('아직 등록된 항목이 없습니다.'), findsOneWidget);
-  });
-
-  testWidgets('흐름: A 목록 → push B 상세 → tab 메모 → modal C 결과', (tester) async {
-    _setSize(tester, const Size(400, 800));
-    await tester.pumpWidget(_app(() async => _items));
-    await tester.pumpAndSettle();
-    expect(find.byType(ListView), findsOneWidget); // 폰: 목록
-    expect(find.byType(GridView), findsNothing);
-
-    await tester.tap(find.text('항목 1'));
-    await tester.pumpAndSettle();
-    expect(find.byType(BackButton), findsOneWidget); // push
-
-    await tester.tap(find.text('결과 보기'));
-    await tester.pumpAndSettle();
-    expect(find.textContaining('실제 기능은 없습니다'), findsOneWidget); // modal
-    await tester.tap(find.text('닫기'));
-    await tester.pumpAndSettle();
-
-    await tester.tap(find.text('메모'));
-    await tester.pumpAndSettle();
-    expect(find.text('아직 메모가 없습니다.'), findsOneWidget); // tab + 빈 상태
-  });
-
-  testWidgets('적응형: 600dp 이상이면 격자', (tester) async {
-    _setSize(tester, const Size(1024, 768));
-    await tester.pumpWidget(_app(() async => _items));
-    await tester.pumpAndSettle();
-    expect(find.byType(GridView), findsOneWidget);
-  });
+ }
+ testWidgets('320px and 1280px summary have no overflow', (t) async {
+  for(final width in [320.0,1280.0]) {
+   await t.binding.setSurfaceSize(Size(width,900));
+   await t.pumpWidget(MaterialApp(home:SummaryScreen(loader:load))); await t.pumpAndSettle();
+   expect(t.takeException(),isNull);
+  }
+  await t.binding.setSurfaceSize(null);
+ });
 }

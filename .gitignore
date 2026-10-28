@@ -44,6 +44,9 @@ app.*.map.json
 /android/app/profile
 /android/app/release
 
-# 중간고사 템플릿: 목업 서버 의존성·Vercel 설정은 올리지 않는다
+# Widget Preview related
+.widget_preview/
+
 node_modules/
-.vercel/
+mock_server/node_modules/
+.DS_Store
