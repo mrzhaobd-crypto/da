@@ -91,7 +91,7 @@ Mac에서는 `NoteQuiz_시작.command`, Windows에서는 `NoteQuiz_시작.cmd`�
 ## 구조와 범위
 `lib/api.dart`: GET / `lib/widgets.dart`: 3상태·반응형 공통 / `lib/screens/`: input, summary, quiz, explanation, result.
 
-`mock_server/db.json`: 고정 데이터 / `docs/`: 기획·가이드·원칙·논증·리뷰·검증 / `presentation/`: 발표자료.
+`mock_server/db.json`: 고정 데이터 / `docs/`: 기획·가이드·원칙·논증·리뷰·검증.
 
 UI 점수 표시는 상수 예시다. 로그인·가입·결제·채점·영구 저장·추천·상태관리 패키지 없음. 로컬 선택만 setState.
 
@@ -109,4 +109,4 @@ flutter build web --release
 
 [변경 기록](docs/출처와변경.md). `node_modules`, `.dart_tool`, `build`는 Git에서 제외한다.
 
-[제출 안내](docs/제출안내.md)를 따른다. LMS에는 **개인 GitHub URL과 발표 PDF 또는 PPTX**를 제출한다. PDF는 27장, PPTX도 같은 27장으로 맞춘다. 이 README의 상대 영상 링크는 영상까지 GitHub에 올려야 온라인에서 접근할 수 있다.
+[제출 안내](docs/제출안내.md)를 따른다. LMS에는 **개인 GitHub URL과 발표자료**를 제출한다. 발표자료는 저장소에 포함하지 않는다. 이 README의 상대 영상 링크는 영상까지 GitHub에 올려야 온라인에서 접근할 수 있다.
