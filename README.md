@@ -103,10 +103,3 @@ flutter build web --release
 ```
 
 [검증 기록](docs/verification.md). 제공 플랫폼 중 Web만 검증. 최초 빌드는 SDK/패키지 및 Web 렌더러 다운로드에 인터넷이 필요할 수 있다.
-
-## 템플릿 출처와 제출
-기반: https://github.com/xide-projext/mid-project-template / 커밋 3a2d643ed1ff23d378995e5902d42f9edec74fe1.
-
-[변경 기록](docs/출처와변경.md). `node_modules`, `.dart_tool`, `build`는 Git에서 제외한다.
-
-[제출 안내](docs/제출안내.md)를 따른다. LMS에는 **개인 GitHub URL과 발표자료**를 제출한다. 발표자료는 저장소에 포함하지 않는다. 이 README의 상대 영상 링크는 영상까지 GitHub에 올려야 온라인에서 접근할 수 있다.
