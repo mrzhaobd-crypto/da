@@ -51,6 +51,7 @@ R06: “repeating the same four choices” — ★4, 2026-10-12. 작성자명 �
 | v2 한 문장 | 문항과 정답·해설·근거를 같은 흐름에서 비교한다 |
 | 작성자 | zhaoboda · 2025106293 · 1인 1팀 |
 | 데모 | [1분 편집 시연](docs/영상/demo_1min.mp4) — 실제 브라우저 캡처와 명시한 위젯 상태 캡처를 편집한 영상, 연속 화면 녹화 아님 |
+| 화면 시연 | [전체 화면 녹화](docs/영상/demo_screen_2026-10-29.mp4) — 2026-10-29 촬영, 84초 |
 | AI 사용 | [prompt-log](docs/prompt-log.md), [셀프 논증](docs/셀프논증.md), AGENTS.md |
 | 제출 상태 | 개인 GitHub 원격 등록 완료. LMS 제출과 6분 리허설은 제출자가 확인 |
 
