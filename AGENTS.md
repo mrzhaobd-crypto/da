@@ -1,8 +1,8 @@
-# AGENTS.md — GAI3008 중간고사: UI 프로토타입 전용 규칙
+# AGENTS.md — GAI3008 중간프로젝트: UI 프로토타입 전용 규칙
 
 ## 목적
 이 프로젝트는 실제 앱 v2의 **UI 프로토타입**이다. 보이기는 동작하는 것처럼, 실제 동작은 구현하지 않는다.
-기준 문서: 중간고사 안내문 5장(허용과 감점). 이 파일은 Claude Code · Cursor · Copilot이 함께 읽는다.
+기준 문서: 중간프로젝트 안내문 5장(허용과 감점). 이 파일은 Claude Code · Cursor · Copilot이 함께 읽는다.
 
 ## 반드시 지킬 것 (MUST)
 - 화면 전환은 3방식만 쓴다: 쌓기 `Navigator.push`/`pop` · 옆으로 `TabBar`/`NavigationBar` · 덮기 `showModalBottomSheet`/`showDialog`.

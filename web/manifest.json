@@ -3,10 +3,10 @@
   "short_name": "NoteQuiz",
   "start_url": ".",
   "display": "standalone",
-  "background_color": "#0175C2",
-  "theme_color": "#0175C2",
+  "background_color": "#F5F7FC",
+  "theme_color": "#4F609B",
   "description": "강의 노트를 핵심 요약과 복습 퀴즈로",
-  "orientation": "portrait-primary",
+  "orientation": "any",
   "prefer_related_applications": false,
   "icons": [
     {
