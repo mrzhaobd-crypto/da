@@ -6,6 +6,7 @@
 - `flutter test`: 6개 통과, 2개 skip. Skip은 글꼴 환경변수가 있을 때만 실행하는 캡처 테스트다.
 - 캡처 테스트: `EVIDENCE_FONT`와 `EVIDENCE_ICONS`를 지정해 별도 실행했고 2개 통과. 390px 상태 화면과 1280px 넓은 화면을 생성했다.
 - `flutter build web --release`: 성공.
+- GitHub 원격 `main`에서 새 경로로 clone한 뒤 `flutter pub get`, `flutter analyze`, `flutter test`, `flutter build web --release`를 다시 실행해 모두 성공했다.
 - 테스트 범위: 입력 오류 해제, 3문항 전체 흐름, E 화면의 원래 보기·내 선택, 고정 결과, 세 GET 화면의 로딩·빈·오류·재시도, 320px·1280px 오버플로.
 - 넓은 화면 자료: 1280×800에서 측면 안내와 3열 요약이 보이는 위젯 테스트 렌더링.
 - 이전 브라우저 캡처는 유지하지만, 코드 수정 후 실제 브라우저 전체 흐름은 제출 전에 한 번 더 확인한다.
